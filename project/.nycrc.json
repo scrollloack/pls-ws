@@ -1,0 +1,23 @@
+{
+  "cache": false,
+  "check-coverage": true,
+  "extension": [
+    ".js"
+  ],
+  "include": [
+    "app/Controllers/Http/**/*.js"
+  ],
+  "exclude": [
+    "coverage/**",
+    "node_modules/**",
+    "**/*.spec.js"
+  ],
+  "sourceMap": true,
+  "reporter": [
+    "html",
+    "text",
+    "text-summary"
+  ],
+  "all": true,
+  "instrument": true
+}
