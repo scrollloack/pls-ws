@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node ace test"
+    "test": "nyc node ace test"
   },
   "keywords": [
     "adonisjs",
@@ -24,9 +24,12 @@
     "@adonisjs/framework": "^5.0.9",
     "@adonisjs/ignitor": "^2.0.8",
     "@adonisjs/lucid": "^6.3.0",
+    "@adonisjs/validator": "^5.1.0",
     "@adonisjs/vow": "^1.0.17",
     "moment": "^2.29.1",
-    "pg": "^8.7.1"
+    "nyc": "^15.1.0",
+    "pg": "^8.7.1",
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {},
   "autoload": {
