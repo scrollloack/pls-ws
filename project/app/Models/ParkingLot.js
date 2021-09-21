@@ -2,6 +2,7 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use("Model");
+const { rule } = use("Validator");
 
 class ParkingLot extends Model {
   static get resourceKey() {
@@ -9,7 +10,34 @@ class ParkingLot extends Model {
   }
 
   static get fillables() {
-    return ["id", "description", "entry_point", "size", "max_occupants"];
+    return [
+      "id",
+      "description",
+      "entry_point",
+      "size",
+      "max_occupants",
+      "created_at",
+      "updated_at",
+    ];
+  }
+
+  static filters() {
+    return ["page", "per_page", "order_by", "sort_by"];
+  }
+
+  static findRule() {
+    return {
+      id: "required|number",
+    };
+  }
+
+  static filterRules() {
+    return {
+      page: `number`,
+      per_page: "number",
+      order_by: [rule("in", this.fillables)],
+      sort_by: [rule("in", ["asc", "desc"])],
+    };
   }
 
   static get createOrUpdateRules() {

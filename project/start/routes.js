@@ -20,6 +20,10 @@ Route.get("/", () => {
   return { greeting: "Hello world in JSON" };
 });
 
-Route.post("login", "UserController.login").middleware("guest");
+Route.post("login", "UserController.login");
 
 // Route.get("users/:id", "UserController.show").middleware("auth");
+
+Route.resource("parking-lots", "ParkingLotController")
+  .except(["edit", "create"])
+  .middleware("jwt");

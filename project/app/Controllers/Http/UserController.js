@@ -3,16 +3,19 @@
 const User = use("App/Models/User");
 const Hash = use("Hash");
 const { validate } = use("Validator");
+const Config = use("Config");
+const jwt = use("jsonwebtoken");
 
 class UserController {
   /**
    * Generates token to be used on parking mamangement
+   * @param {object} ctx
    * @param {object} auth
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    * @returns object
    */
-  async login({ auth, request, response }) {
+  async login({ request, response }) {
     try {
       const { email, password } = request.all();
 
@@ -23,18 +26,37 @@ class UserController {
 
       const validation = await validate(data, User.loginRules, User.messages);
       if (validation.fails()) {
-        return response.badRequest({ error: validation.messages() });
+        return response.unprocessableEntity({ error: validation.messages() });
       }
 
-      if (!(await this.checkCredentials(data))) {
+      const user = await User.findBy({ email: data.email });
+
+      let checkPassword = null;
+
+      if (user) {
+        checkPassword = await Hash.verify(data.password, user.password);
+      }
+
+      if (!user || !checkPassword) {
         return response.badRequest({ error: "Credentials does not match" });
       }
 
-      const token = await auth.attempt(email, password, true);
+      const token = jwt.sign(
+        {
+          id: user.id,
+          email: user.email,
+          created_at: user.created_at,
+          updated_at: user.updated_at,
+        },
+        Config.get("jwt.token")
+      );
 
-      return response.ok(token);
+      user.token = token;
+      await user.save();
+
+      return response.ok({ token: token });
     } catch (err) {
-      return response.internalServerError({ error: err.message });
+      return response.preconditionFailed(error.message);
     }
   }
 
@@ -51,25 +73,6 @@ class UserController {
   //     return response.badRequest({ error: err.message });
   //   }
   // }
-
-  /**
-   * Verifies admin credentials
-   * @param {object} data
-   * @returns boolean
-   */
-  async checkCredentials(data) {
-    const user = await User.findBy({ email: data.email });
-    if (!user) {
-      return false;
-    }
-
-    const checkPassword = await Hash.verify(data.password, user.password);
-    if (!checkPassword) {
-      return false;
-    }
-
-    return true;
-  }
 }
 
 module.exports = UserController;
