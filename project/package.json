@@ -24,14 +24,20 @@
     "@adonisjs/framework": "^5.0.9",
     "@adonisjs/ignitor": "^2.0.8",
     "@adonisjs/lucid": "^6.3.0",
+    "@adonisjs/session": "^1.1.0",
     "@adonisjs/validator": "^5.1.0",
     "@adonisjs/vow": "^1.0.17",
+    "adonis-bumblebee": "^2.0.0",
+    "json-api-serializer": "^2.6.4",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
-    "nyc": "^15.1.0",
-    "pg": "^8.7.1",
-    "sqlite3": "^5.0.2"
+    "pg": "^8.7.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nyc": "^15.1.0",
+    "sqlite3": "^5.0.2",
+    "faker": "^5.5.3"
+  },
   "autoload": {
     "App": "./app"
   }

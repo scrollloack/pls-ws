@@ -3,12 +3,13 @@
 const { test, trait } = use("Test/Suite")("User Http");
 const User = use("App/Models/User");
 const Factory = use("Factory");
+const faker = use("faker");
 
 trait("Test/ApiClient");
 
 const URL_PATH = "/login";
 
-test("generates admin token via login", async ({ client }) => {
+test("it should generate admin token via login", async ({ client }) => {
   const { username, email, password } = await Factory.model(
     "App/Models/User"
   ).make();
@@ -28,13 +29,11 @@ test("generates admin token via login", async ({ client }) => {
 
   response.assertStatus(200);
   response.assertJSONSubset({
-    type: response.body.type,
     token: response.body.token,
-    refreshToken: null,
   });
 });
 
-test("validates login request rules", async ({ client }) => {
+test("it should validate login request rules", async ({ client }) => {
   const { username, email, password } = await Factory.model(
     "App/Models/User"
   ).make();
@@ -46,22 +45,22 @@ test("validates login request rules", async ({ client }) => {
   });
 
   let response = await client.post(URL_PATH).send({ password: password }).end();
-  response.assertStatus(400);
+  response.assertStatus(422);
   response.assertError(loginValidationResponses()[0].data.email_required);
 
   response = await client
     .post(URL_PATH)
     .send({ email: "asd", password: password })
     .end();
-  response.assertStatus(400);
+  response.assertStatus(422);
   response.assertError(loginValidationResponses()[0].data.email_email);
 
   response = await client.post(URL_PATH).send({ email: user.email }).end();
-  response.assertStatus(400);
+  response.assertStatus(422);
   response.assertError(loginValidationResponses()[0].data.password_required);
 });
 
-test("validates bad credentials either email or password", async ({
+test("it should validate bad credentials either email or password", async ({
   client,
 }) => {
   const { username, email, password } = await Factory.model(
@@ -75,8 +74,8 @@ test("validates bad credentials either email or password", async ({
   });
 
   const data = {
-    email: "qweqwe@asd.com",
-    password: password,
+    email: user.email,
+    password: faker.internet.password(),
   };
 
   let response = await client.post(URL_PATH).send(data).end();
@@ -85,8 +84,8 @@ test("validates bad credentials either email or password", async ({
     error: "Credentials does not match",
   });
 
-  data.email = user.email;
-  data.password = "qweqweqwe";
+  data.email = "asdqwe@qwe.com";
+  data.password = password;
 
   response = await client.post(URL_PATH).send(data).end();
   response.assertStatus(400);

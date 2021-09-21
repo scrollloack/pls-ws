@@ -14,7 +14,6 @@
 const Factory = use("Factory");
 const User = use("App/Models/User");
 const moment = use("moment");
-const Hash = use("Hash");
 
 class UserSeeder {
   async run() {
@@ -22,8 +21,8 @@ class UserSeeder {
     user.username = "sample";
     user.email = "sample@asd.com";
     user.password = "password";
-    user.created_at = moment();
-    user.created_at = moment();
+    user.created_at = moment().format();
+    user.updated_at = moment().format();
 
     await user.save();
   }
