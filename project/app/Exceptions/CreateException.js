@@ -3,9 +3,9 @@
 const { LogicalException } = require("@adonisjs/generic-exceptions");
 const Config = use("Config");
 
-class ParkingLotNotFoundException extends LogicalException {
+class CreateException extends LogicalException {
   constructor(message) {
-    super(Config.get("errors.show"), 404);
+    super(Config.get("errors.create"), 400);
   }
   /**
    * Handle this exception by itself
@@ -13,4 +13,4 @@ class ParkingLotNotFoundException extends LogicalException {
   // handle () {}
 }
 
-module.exports = ParkingLotNotFoundException;
+module.exports = CreateException;

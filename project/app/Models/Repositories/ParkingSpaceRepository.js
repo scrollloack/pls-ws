@@ -1,21 +1,21 @@
 "use strict";
 
-const ParkingLot = use("App/Models/ParkingLot");
+const ParkingSpace = use("App/Models/ParkingSpace");
 const JSONAPISerializer = use("json-api-serializer");
 const Serializer = new JSONAPISerializer();
 const NotFoundException = use("App/Exceptions/NotFoundException");
 const CreateException = use("App/Exceptions/CreateException");
 const UpdateException = use("App/Exceptions/UpdateException");
 
-class ParkingLotRepository {
+class ParkingSpaceRepository {
   async all(page = 1, perPage = 25, orderBy = "created_at", sortBy = "desc") {
-    let model = ParkingLot.query().orderBy(orderBy, sortBy);
+    let model = ParkingSpace.query().orderBy(orderBy, sortBy);
 
     return await model.paginate(page, perPage);
   }
 
-  findParkingLotId(id) {
-    return ParkingLot.query()
+  findParkingSpaceId(id) {
+    return ParkingSpace.query()
       .where("id", id)
       .firstOrFail()
       .then(
@@ -30,16 +30,16 @@ class ParkingLotRepository {
 
   async create(data) {
     try {
-      return await ParkingLot.create(data);
+      return await ParkingSpace.create(data);
     } catch (error) {
       throw new CreateException(error);
     }
   }
 
-  async update(ParkingLot, data) {
+  async update(ParkingSpace, data) {
     try {
-      ParkingLot.merge(data);
-      return await ParkingLot.save();
+      ParkingSpace.merge(data);
+      return await ParkingSpace.save();
     } catch (error) {
       throw new UpdateException(error);
     }
@@ -76,4 +76,4 @@ class ParkingLotRepository {
   }
 }
 
-module.exports = ParkingLotRepository;
+module.exports = ParkingSpaceRepository;

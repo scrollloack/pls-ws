@@ -1,7 +1,7 @@
 "use strict";
 
-const { test, trait } = use("Test/Suite")("Parking Lot Http");
-const ParkingLot = use("App/Models/ParkingLot");
+const { test, trait } = use("Test/Suite")("Parking Space Http");
+const ParkingSpace = use("App/Models/ParkingSpace");
 const User = use("App/Models/User");
 const Factory = use("Factory");
 const TestHelper = use("/TestHelper");
@@ -10,7 +10,7 @@ const faker = use("faker");
 trait("Test/ApiClient");
 trait("Session/Client");
 
-const URL_PATH = "/parking-lots";
+const URL_PATH = "/parking-space";
 
 test("it should validate jwt token access", async ({ client }) => {
   const response = await client.get(URL_PATH).end();
@@ -21,12 +21,12 @@ test("it should validate jwt token access", async ({ client }) => {
   });
 });
 
-test("it should validate lists ParkingLot rules", async ({ client }) => {
+test("it should validate lists ParkingSpace rules", async ({ client }) => {
   const token = await TestHelper.getToken();
 
-  const data = await TestHelper.parkingLotPayloadProvider();
+  const data = await TestHelper.parkingSpacePayloadProvider();
 
-  await Factory.model("App/Models/ParkingLot").create(data);
+  await Factory.model("App/Models/ParkingSpace").create(data);
 
   const pageFilterResopnse = await client
     .get(URL_PATH)
@@ -90,12 +90,12 @@ function listFilters() {
   };
 }
 
-test("it should lists all ParkingLot", async ({ client }) => {
+test("it should list ParkingSpace", async ({ client }) => {
   const token = await TestHelper.getToken();
 
-  const data = await TestHelper.parkingLotPayloadProvider();
+  const data = await TestHelper.parkingSpacePayloadProvider();
 
-  await Factory.model("App/Models/ParkingLot").create(data);
+  await Factory.model("App/Models/ParkingSpace").create(data);
 
   const response = await client
     .get(URL_PATH)
@@ -112,12 +112,12 @@ test("it should lists all ParkingLot", async ({ client }) => {
   });
 });
 
-test("it should validate list ParkingLot by id", async ({ client }) => {
+test("it should validate list ParkingSpace by id", async ({ client }) => {
   const token = await TestHelper.getToken();
 
-  const data = await TestHelper.parkingLotPayloadProvider();
+  const data = await TestHelper.parkingSpacePayloadProvider();
 
-  await Factory.model("App/Models/ParkingLot").create(data);
+  await Factory.model("App/Models/ParkingSpace").create(data);
 
   const requiredResponse = await client
     .get(`${URL_PATH}/""`)
@@ -137,12 +137,14 @@ test("it should validate list ParkingLot by id", async ({ client }) => {
 test("it should list ParkingLot by id", async ({ client }) => {
   const token = await TestHelper.getToken();
 
-  const data = await TestHelper.parkingLotPayloadProvider();
+  const data = await TestHelper.parkingSpacePayloadProvider();
 
-  const parkingLot = await Factory.model("App/Models/ParkingLot").create(data);
+  const parkingSpace = await Factory.model("App/Models/ParkingSpace").create(
+    data
+  );
 
   const response = await client
-    .get(`${URL_PATH}/${parkingLot.id}`)
+    .get(`${URL_PATH}/${parkingSpace.id}`)
     .header("Authorization", "Bearer " + token)
     .end();
 
@@ -158,10 +160,8 @@ test("it should validate create ParkingLot rules", async ({ client }) => {
   const token = await TestHelper.getToken();
 
   const requiredData = {
-    description: "",
-    entry_point: "",
-    size: "",
-    max_occupants: "",
+    parking_lot_id: "",
+    space_number: "",
   };
 
   const requiredResponse = await client
@@ -172,26 +172,9 @@ test("it should validate create ParkingLot rules", async ({ client }) => {
 
   requiredResponse.assertStatus(422);
 
-  const stringData = {
-    description: 1,
-    entry_point: 1,
-    size: 0,
-    max_occupants: 6,
-  };
-
-  const stringResponse = await client
-    .post(URL_PATH)
-    .header("Authorization", "Bearer " + token)
-    .send(stringData)
-    .end();
-
-  stringResponse.assertStatus(422);
-
   const numberData = {
-    description: "SP",
-    entry_point: "A",
-    size: "asdasd",
-    max_occupants: "asdasd",
+    parking_lot_id: "asd",
+    space_number: "qwe",
   };
 
   const numberResponse = await client
@@ -203,10 +186,10 @@ test("it should validate create ParkingLot rules", async ({ client }) => {
   numberResponse.assertStatus(422);
 });
 
-test("it should create ParkingLot", async ({ client }) => {
+test("it should create ParkingSpace", async ({ client }) => {
   const token = await TestHelper.getToken();
 
-  const data = TestHelper.parkingLotPayloadProvider();
+  const data = TestHelper.parkingSpacePayloadProvider();
 
   const response = await client
     .post(URL_PATH)
@@ -222,52 +205,35 @@ test("it should create ParkingLot", async ({ client }) => {
   });
 });
 
-test("it should validate update ParkingLot by id", async ({ client }) => {
+test("it should validate update ParkingSpace by id", async ({ client }) => {
   const token = await TestHelper.getToken();
 
-  const data = await TestHelper.parkingLotPayloadProvider();
+  const data = await TestHelper.parkingSpacePayloadProvider();
 
-  const parkingLot = await Factory.model("App/Models/ParkingLot").create(data);
+  const parkingSpace = await Factory.model("App/Models/ParkingSpace").create(
+    data
+  );
 
   const requiredData = {
-    description: "",
-    entry_point: "",
-    size: "",
-    max_occupants: "",
+    parking_lot_id: "",
+    space_number: "",
   };
 
   const requiredResponse = await client
-    .put(`${URL_PATH}/${parkingLot.id}`)
+    .put(`${URL_PATH}/${parkingSpace.id}`)
     .header("Authorization", "Bearer " + token)
     .send(requiredData)
     .end();
 
   requiredResponse.assertStatus(422);
 
-  const stringData = {
-    description: 1,
-    entry_point: 1,
-    size: 0,
-    max_occupants: 6,
-  };
-
-  const stringResponse = await client
-    .put(`${URL_PATH}/${parkingLot.id}`)
-    .header("Authorization", "Bearer " + token)
-    .send(stringData)
-    .end();
-
-  stringResponse.assertStatus(422);
-
   const numberData = {
-    description: "SP",
-    entry_point: "A",
-    size: "asdasd",
-    max_occupants: "asdasd",
+    parking_lot_id: "asd",
+    space_number: "qwe",
   };
 
   const numberResponse = await client
-    .put(`${URL_PATH}/${parkingLot.id}`)
+    .put(`${URL_PATH}/${parkingSpace.id}`)
     .header("Authorization", "Bearer " + token)
     .send(numberData)
     .end();
@@ -275,17 +241,19 @@ test("it should validate update ParkingLot by id", async ({ client }) => {
   numberResponse.assertStatus(422);
 });
 
-test("it should update ParkingLot", async ({ client }) => {
+test("it should update ParkingSpace", async ({ client }) => {
   const token = await TestHelper.getToken();
 
-  const data = await TestHelper.parkingLotPayloadProvider();
+  const data = await TestHelper.parkingSpacePayloadProvider();
 
-  const parkingLot = await Factory.model("App/Models/ParkingLot").create(data);
+  const parkingSpace = await Factory.model("App/Models/ParkingSpace").create(
+    data
+  );
 
-  const updatedData = TestHelper.parkingLotPayloadProvider();
+  const updatedData = TestHelper.parkingSpacePayloadProvider();
 
   const response = await client
-    .put(`${URL_PATH}/${parkingLot.id}`)
+    .put(`${URL_PATH}/${parkingSpace.id}`)
     .header("Authorization", "Bearer " + token)
     .send(updatedData)
     .end();
@@ -298,21 +266,21 @@ test("it should update ParkingLot", async ({ client }) => {
   });
 });
 
-test("it should validate delete ParkingLot by id", async ({ client }) => {
+test("it should validate delete ParkingSpace by id", async ({ client }) => {
   const token = await TestHelper.getToken();
 
-  const createdData = await TestHelper.parkingLotPayloadProvider();
+  const createdData = await TestHelper.parkingSpacePayloadProvider();
 
-  const parkingLot = await Factory.model("App/Models/ParkingLot").create(
+  const parkingSpace = await Factory.model("App/Models/ParkingSpace").create(
     createdData
   );
 
-  const findParkingLotResponse = await client
-    .get(`${URL_PATH}/${parkingLot.id}`)
+  const findParkingSpaceResponse = await client
+    .get(`${URL_PATH}/${parkingSpace.id}`)
     .header("Authorization", "Bearer " + token)
     .end();
 
-  findParkingLotResponse.assertStatus(200);
+  findParkingSpaceResponse.assertStatus(200);
 
   const requiredDeleteResponse = await client
     .delete(`${URL_PATH}/""`)
@@ -332,23 +300,23 @@ test("it should validate delete ParkingLot by id", async ({ client }) => {
 test("it should delete Parking Lot", async ({ client }) => {
   const token = await TestHelper.getToken();
 
-  const createdData = await TestHelper.parkingLotPayloadProvider();
+  const createdData = await TestHelper.parkingSpacePayloadProvider();
 
-  const parkingLot = await Factory.model("App/Models/ParkingLot").create(
+  const parkingSpace = await Factory.model("App/Models/ParkingSpace").create(
     createdData
   );
 
-  const findParkingLotResponse = await client
-    .get(`${URL_PATH}/${parkingLot.id}`)
+  const findParkingSpaceResponse = await client
+    .get(`${URL_PATH}/${parkingSpace.id}`)
     .header("Authorization", "Bearer " + token)
     .end();
 
-  findParkingLotResponse.assertStatus(200);
+  findParkingSpaceResponse.assertStatus(200);
 
-  const deleteParkingLotResponse = await client
-    .delete(`${URL_PATH}/${parkingLot.id}`)
+  const deleteParkingSpaceResponse = await client
+    .delete(`${URL_PATH}/${parkingSpace.id}`)
     .header("Authorization", "Bearer " + token)
     .end();
 
-  deleteParkingLotResponse.assertStatus(202);
+  deleteParkingSpaceResponse.assertStatus(202);
 });
