@@ -1,11 +1,10 @@
 "use strict";
 
 const { LogicalException } = require("@adonisjs/generic-exceptions");
-const Config = use("Config");
 
-class ParkingLotCreateException extends LogicalException {
+class UpdateException extends LogicalException {
   constructor(message) {
-    super(Config.get("errors.create"), 400);
+    super(Config.get("errors.update"), 400);
   }
   /**
    * Handle this exception by itself
@@ -13,4 +12,4 @@ class ParkingLotCreateException extends LogicalException {
   // handle () {}
 }
 
-module.exports = ParkingLotCreateException;
+module.exports = UpdateException;

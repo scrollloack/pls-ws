@@ -51,6 +51,15 @@ class TestHelper {
 
     return data;
   }
+
+  static parkingSpacePayloadProvider() {
+    const data = {
+      parking_lot_id: faker.datatype.number({ min: 1, max: 3 }),
+      space_number: faker.datatype.number({ min: 1, max: 100 }),
+    };
+
+    return data;
+  }
 }
 
 module.exports = TestHelper;

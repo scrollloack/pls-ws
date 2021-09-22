@@ -27,3 +27,7 @@ Route.post("login", "UserController.login");
 Route.resource("parking-lots", "ParkingLotController")
   .except(["edit", "create"])
   .middleware("jwt");
+
+Route.resource("parking-space", "ParkingSpaceController")
+  .except(["edit", "create"])
+  .middleware("jwt");

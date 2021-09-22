@@ -47,3 +47,14 @@ Factory.blueprint("App/Models/ParkingLot", async (faker, i, data) => {
     updated_at: data.updated_at ? data.updated_at : moment().format(),
   };
 });
+
+Factory.blueprint("App/Models/ParkingSpace", async (faker, i, data) => {
+  return {
+    parking_lot_id: data.parking_lot_id
+      ? data.parking_lot_id
+      : faker.datatype.number(),
+    space_number: data.space_number
+      ? data.space_number
+      : faker.datatype.number(),
+  };
+});
