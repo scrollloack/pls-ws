@@ -1,8 +1,5 @@
 "use strict";
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-
 const ParkingSpace = use("App/Models/ParkingSpace");
 const ParkingSpaceRepository = make(
   "App/Models/Repositories/ParkingSpaceRepository"
