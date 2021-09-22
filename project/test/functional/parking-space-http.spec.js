@@ -159,7 +159,15 @@ test("it should validate create ParkingSpace rules", async ({ client }) => {
 test("it should create ParkingSpace", async ({ client }) => {
   const token = await TestHelper.getToken();
 
+  const parkingLotData = await TestHelper.parkingLotPayloadProvider();
+
+  const parkingLot = await Factory.model("App/Models/ParkingLot").create(
+    parkingLotData
+  );
+
   const data = TestHelper.parkingSpacePayloadProvider();
+
+  data.parking_lot_id = parkingLot.id;
 
   const response = await client
     .post(URL_PATH)
@@ -214,7 +222,15 @@ test("it should validate update ParkingSpace by id", async ({ client }) => {
 test("it should update ParkingSpace", async ({ client }) => {
   const token = await TestHelper.getToken();
 
+  const parkingLotData = await TestHelper.parkingLotPayloadProvider();
+
+  const parkingLot = await Factory.model("App/Models/ParkingLot").create(
+    parkingLotData
+  );
+
   const data = await TestHelper.parkingSpacePayloadProvider();
+
+  data.parking_lot_id = parkingLot.id;
 
   const parkingSpace = await Factory.model("App/Models/ParkingSpace").create(
     data
@@ -267,10 +283,18 @@ test("it should validate delete ParkingSpace by id", async ({ client }) => {
   numberDeleteResponse.assertStatus(422);
 });
 
-test("it should delete Parking Lot", async ({ client }) => {
+test("it should delete ParkingSpace", async ({ client }) => {
   const token = await TestHelper.getToken();
 
+  const parkingLotData = await TestHelper.parkingLotPayloadProvider();
+
+  const parkingLot = await Factory.model("App/Models/ParkingLot").create(
+    parkingLotData
+  );
+
   const createdData = await TestHelper.parkingSpacePayloadProvider();
+
+  createdData.parking_lot_id = parkingLot.id;
 
   const parkingSpace = await Factory.model("App/Models/ParkingSpace").create(
     createdData

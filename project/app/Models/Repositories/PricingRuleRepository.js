@@ -1,5 +1,6 @@
 "use strict";
 
+const ParkingLot = use("App/Models/ParkingLot");
 const PricingRule = use("App/Models/PricingRule");
 const JSONAPISerializer = use("json-api-serializer");
 const Serializer = new JSONAPISerializer();
@@ -16,6 +17,20 @@ class PricingRuleRepository {
 
   findPricingRuleId(id) {
     return PricingRule.query()
+      .where("id", id)
+      .firstOrFail()
+      .then(
+        (response) => {
+          return response;
+        },
+        (error) => {
+          throw new NotFoundException(error);
+        }
+      );
+  }
+
+  findParkingLotId(id) {
+    return ParkingLot.query()
       .where("id", id)
       .firstOrFail()
       .then(

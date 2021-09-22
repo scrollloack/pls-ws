@@ -163,7 +163,15 @@ test("it should validate create PricingRule rules", async ({ client }) => {
 test("it should create PricingRule", async ({ client }) => {
   const token = await TestHelper.getToken();
 
+  const parkingLotData = await TestHelper.parkingLotPayloadProvider();
+
+  const parkingLot = await Factory.model("App/Models/ParkingLot").create(
+    parkingLotData
+  );
+
   const data = TestHelper.pricingRulePayloadProvider();
+
+  data.parking_lot_id = parkingLot.id;
 
   const response = await client
     .post(URL_PATH)
@@ -222,7 +230,15 @@ test("it should validate update PricingRule by id", async ({ client }) => {
 test("it should update PricingRule", async ({ client }) => {
   const token = await TestHelper.getToken();
 
+  const parkingLotData = await TestHelper.parkingLotPayloadProvider();
+
+  const parkingLot = await Factory.model("App/Models/ParkingLot").create(
+    parkingLotData
+  );
+
   const data = await TestHelper.pricingRulePayloadProvider();
+
+  data.parking_lot_id = parkingLot.id;
 
   const pricingRule = await Factory.model("App/Models/PricingRule").create(
     data
@@ -273,4 +289,36 @@ test("it should validate delete PricingRule by id", async ({ client }) => {
     .end();
 
   numberDeleteResponse.assertStatus(422);
+});
+
+test("it should delete PricingRule", async ({ client }) => {
+  const token = await TestHelper.getToken();
+
+  const parkingLotData = await TestHelper.parkingLotPayloadProvider();
+
+  const parkingLot = await Factory.model("App/Models/ParkingLot").create(
+    parkingLotData
+  );
+
+  const createdData = await TestHelper.pricingRulePayloadProvider();
+
+  createdData.parking_lot_id = parkingLot.id;
+
+  const pricingRule = await Factory.model("App/Models/PricingRule").create(
+    createdData
+  );
+
+  const findPricingRuleResponse = await client
+    .get(`${URL_PATH}/${pricingRule.id}`)
+    .header("Authorization", "Bearer " + token)
+    .end();
+
+  findPricingRuleResponse.assertStatus(200);
+
+  const deletePricingRuleResponse = await client
+    .delete(`${URL_PATH}/${pricingRule.id}`)
+    .header("Authorization", "Bearer " + token)
+    .end();
+
+  deletePricingRuleResponse.assertStatus(202);
 });

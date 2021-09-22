@@ -76,6 +76,10 @@ class PricingRuleController {
         return response.unprocessableEntity({ errors: validation.messages() });
       }
 
+      await PricingRuleRepository.findParkingLotId(
+        request.input("parking_lot_id")
+      );
+
       const pricingRule = await PricingRuleRepository.create(
         request.only(PricingRule.fillables)
       );

@@ -11,7 +11,6 @@ class PricingRuleSchema extends Schema {
         .integer("parking_lot_id")
         .unsigned()
         .references("parking_lots.id")
-        .unique()
         .onDelete("CASCADE");
       table.decimal("base_rate").defaultTo(40.0);
       table.decimal("hourly_base_rate").notNullable();
