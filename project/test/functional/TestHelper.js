@@ -36,6 +36,35 @@ class TestHelper {
     return token;
   }
 
+  static listFilters() {
+    return {
+      pageFilter: {
+        page: "asd",
+        per_page: 10,
+        order_by: "created_at",
+        sort_by: "asc",
+      },
+      perPageFilter: {
+        page: 1,
+        per_page: "asd",
+        order_by: "created_at",
+        sort_by: "asc",
+      },
+      orderByFilter: {
+        page: 1,
+        per_page: 10,
+        order_by: "asd",
+        sort_by: "asc",
+      },
+      sortByFilter: {
+        page: 1,
+        per_page: 10,
+        order_by: "created_at",
+        sort_by: "asd",
+      },
+    };
+  }
+
   static parkingLotPayloadProvider() {
     const x = 1,
       y = 6;
@@ -59,6 +88,29 @@ class TestHelper {
     };
 
     return data;
+  }
+
+  static pricingRulePayloadProvider() {
+    return {
+      parking_lot_id: faker.datatype.number({ min: 1, max: 3 }),
+      base_rate: parseFloat(
+        faker.datatype.number({ min: 40, max: 60, precision: 0.01 })
+      ),
+      hourly_base_rate: parseFloat(
+        faker.datatype.number({
+          min: 20,
+          max: 30,
+          precision: 0.01,
+        })
+      ),
+      one_day_rate: parseFloat(
+        faker.datatype.number({
+          min: 5000,
+          max: 6000,
+          precision: 0.01,
+        })
+      ),
+    };
   }
 }
 

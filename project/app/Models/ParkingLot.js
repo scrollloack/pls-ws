@@ -63,6 +63,14 @@ class ParkingLot extends Model {
       "max_occupants.number": "Size should be a number",
     };
   }
+
+  parkingSpaces() {
+    return this.hasMany("App/Models/ParkingSpace");
+  }
+
+  pricingRules() {
+    return this.hasOne("App/Models/PricingRule");
+  }
 }
 
 module.exports = ParkingLot;

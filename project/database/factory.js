@@ -58,3 +58,20 @@ Factory.blueprint("App/Models/ParkingSpace", async (faker, i, data) => {
       : faker.datatype.number(),
   };
 });
+
+Factory.blueprint("App/Models/PricingRule", async (faker, i, data) => {
+  return {
+    parking_lot_id: data.parking_lot_id
+      ? data.parking_lot_id
+      : faker.datatype.number(),
+    base_rate: data.base_rate
+      ? data.base_rate
+      : faker.datatype.number({ min: 40, max: 60, precision: 0.01 }),
+    hourly_base_rate: data.hourly_base_rate
+      ? data.hourly_base_rate
+      : faker.datatype.number({ min: 20, max: 30, precision: 0.01 }),
+    one_day_rate: data.one_day_rate
+      ? data.one_day_rate
+      : faker.datatype.number({ min: 5000, max: 6000, precision: 0.01 }),
+  };
+});
