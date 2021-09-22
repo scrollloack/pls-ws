@@ -5,7 +5,6 @@ const ParkingSpace = use("App/Models/ParkingSpace");
 const User = use("App/Models/User");
 const Factory = use("Factory");
 const TestHelper = use("/TestHelper");
-const faker = use("faker");
 
 trait("Test/ApiClient");
 trait("Session/Client");
@@ -31,7 +30,7 @@ test("it should validate lists ParkingSpace rules", async ({ client }) => {
   const pageFilterResopnse = await client
     .get(URL_PATH)
     .header("Authorization", "Bearer " + token)
-    .send(listFilters().pageFilter)
+    .send(TestHelper.listFilters().pageFilter)
     .end();
 
   pageFilterResopnse.assertStatus(422);
@@ -39,7 +38,7 @@ test("it should validate lists ParkingSpace rules", async ({ client }) => {
   const perPageFilterResopnse = await client
     .get(URL_PATH)
     .header("Authorization", "Bearer " + token)
-    .send(listFilters().perPageFilter)
+    .send(TestHelper.listFilters().perPageFilter)
     .end();
 
   perPageFilterResopnse.assertStatus(422);
@@ -47,7 +46,7 @@ test("it should validate lists ParkingSpace rules", async ({ client }) => {
   const orderByFilterResopnse = await client
     .get(URL_PATH)
     .header("Authorization", "Bearer " + token)
-    .send(listFilters().orderByFilter)
+    .send(TestHelper.listFilters().orderByFilter)
     .end();
 
   orderByFilterResopnse.assertStatus(422);
@@ -55,40 +54,11 @@ test("it should validate lists ParkingSpace rules", async ({ client }) => {
   const sortByFilterResopnse = await client
     .get(URL_PATH)
     .header("Authorization", "Bearer " + token)
-    .send(listFilters().sortByFilter)
+    .send(TestHelper.listFilters().sortByFilter)
     .end();
 
   sortByFilterResopnse.assertStatus(422);
 });
-
-function listFilters() {
-  return {
-    pageFilter: {
-      page: "asd",
-      per_page: 10,
-      order_by: "created_at",
-      sort_by: "asc",
-    },
-    perPageFilter: {
-      page: 1,
-      per_page: "asd",
-      order_by: "created_at",
-      sort_by: "asc",
-    },
-    orderByFilter: {
-      page: 1,
-      per_page: 10,
-      order_by: "asd",
-      sort_by: "asc",
-    },
-    sortByFilter: {
-      page: 1,
-      per_page: 10,
-      order_by: "created_at",
-      sort_by: "asd",
-    },
-  };
-}
 
 test("it should list ParkingSpace", async ({ client }) => {
   const token = await TestHelper.getToken();
@@ -134,7 +104,7 @@ test("it should validate list ParkingSpace by id", async ({ client }) => {
   numberResponse.assertStatus(422);
 });
 
-test("it should list ParkingLot by id", async ({ client }) => {
+test("it should list ParkingSpace by id", async ({ client }) => {
   const token = await TestHelper.getToken();
 
   const data = await TestHelper.parkingSpacePayloadProvider();
@@ -156,7 +126,7 @@ test("it should list ParkingLot by id", async ({ client }) => {
   });
 });
 
-test("it should validate create ParkingLot rules", async ({ client }) => {
+test("it should validate create ParkingSpace rules", async ({ client }) => {
   const token = await TestHelper.getToken();
 
   const requiredData = {

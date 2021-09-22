@@ -47,6 +47,10 @@ class ParkingSpace extends Model {
       "space_number.string": "Space Number should be a string",
     };
   }
+
+  parkingLot() {
+    return this.belongsTo("App/Models/ParkingLot");
+  }
 }
 
 module.exports = ParkingSpace;
