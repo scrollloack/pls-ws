@@ -1,36 +1,21 @@
 "use strict";
 
-const ParkingSpace = use("App/Models/ParkingSpace");
-const ParkingLot = use("App/Models/ParkingLot");
+const ClientInfo = use("App/Models/ClientInfo");
 const JSONAPISerializer = use("json-api-serializer");
 const Serializer = new JSONAPISerializer();
 const NotFoundException = use("App/Exceptions/NotFoundException");
 const CreateException = use("App/Exceptions/CreateException");
 const UpdateException = use("App/Exceptions/UpdateException");
 
-class ParkingSpaceRepository {
+class ClientInfoRepository {
   async all(page = 1, perPage = 25, orderBy = "created_at", sortBy = "desc") {
-    let model = ParkingSpace.query().orderBy(orderBy, sortBy);
+    let model = ClientInfo.query().orderBy(orderBy, sortBy);
 
     return await model.paginate(page, perPage);
   }
 
-  findParkingSpaceId(id) {
-    return ParkingSpace.query()
-      .where("id", id)
-      .firstOrFail()
-      .then(
-        (response) => {
-          return response;
-        },
-        (error) => {
-          throw new NotFoundException(error);
-        }
-      );
-  }
-
-  findParkingLotId(id) {
-    return ParkingLot.query()
+  findClientInfoId(id) {
+    return ClientInfo.query()
       .where("id", id)
       .firstOrFail()
       .then(
@@ -45,16 +30,16 @@ class ParkingSpaceRepository {
 
   async create(data) {
     try {
-      return await ParkingSpace.create(data);
+      return await ClientInfo.create(data);
     } catch (error) {
       throw new CreateException(error);
     }
   }
 
-  async update(ParkingSpace, data) {
+  async update(ClientInfo, data) {
     try {
-      ParkingSpace.merge(data);
-      return await ParkingSpace.save();
+      ClientInfo.merge(data);
+      return await ClientInfo.save();
     } catch (error) {
       throw new UpdateException(error);
     }
@@ -91,4 +76,4 @@ class ParkingSpaceRepository {
   }
 }
 
-module.exports = ParkingSpaceRepository;
+module.exports = ClientInfoRepository;

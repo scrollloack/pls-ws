@@ -31,15 +31,14 @@ Factory.blueprint("App/Models/ParkingLot", async (faker, i, data) => {
   const y = 6;
 
   let entryPointItems = ["A", "B", "C"];
-  let sizeItems = [0, 1, 2];
+  let sizeX = 0,
+    sizeY = 2;
   return {
     description: data.description ? data.description : faker.word(),
     entry_point: data.entry_point
       ? data.entry_point
       : entryPointItems[Math.floor(Math.random() * entryPointItems.length)],
-    size: data.size
-      ? data.size
-      : sizeItems[Math.floor(Math.random() * sizeItems.length)],
+    size: data.size ? data.size : ~~(Math.random() * sizeY) + sizeX,
     max_occupants: data.max_occupants
       ? data.max_occupants
       : ~~(Math.random() * y) + x,
@@ -73,5 +72,16 @@ Factory.blueprint("App/Models/PricingRule", async (faker, i, data) => {
     one_day_rate: data.one_day_rate
       ? data.one_day_rate
       : faker.datatype.number({ min: 5000, max: 6000, precision: 0.01 }),
+  };
+});
+
+Factory.blueprint("App/Models/ClientInfo", async (faker, i, data) => {
+  const x = 0,
+    y = 2;
+
+  return {
+    car_size: data.car_size ? data.car_size : ~~(Math.random() * y) + x,
+    car_color: data.car_color ? data.car_color : faker.lorem.word(),
+    plate_number: data.plate_number ? data.plate_number : faker.lorem.word(),
   };
 });

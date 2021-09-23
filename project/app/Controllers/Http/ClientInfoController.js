@@ -1,18 +1,18 @@
 "use strict";
 
-const ParkingSpace = use("App/Models/ParkingSpace");
-const ParkingSpaceRepository = make(
-  "App/Models/Repositories/ParkingSpaceRepository"
+const ClientInfo = use("App/Models/ClientInfo");
+const ClientInfoRepository = make(
+  "App/Models/Repositories/ClientInfoRepository"
 );
 const { validate } = use("Validator");
 
 /**
- * Resourceful controller for interacting with parkingspaces
+ * Resourceful controller for interacting with clientinfos
  */
-class ParkingSpaceController {
+class ClientInfoController {
   /**
-   * Show a list of all parkingspaces.
-   * GET parkingspaces
+   * Show a list of all clientinfos.
+   * GET clientinfos
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -22,8 +22,8 @@ class ParkingSpaceController {
   async index({ request, response, transform }) {
     try {
       const validation = await validate(
-        request.only(ParkingSpace.filters()),
-        ParkingSpace.filterRules(),
+        request.only(ClientInfo.filters()),
+        ClientInfo.filterRules(),
         {}
       );
 
@@ -31,7 +31,7 @@ class ParkingSpaceController {
         return response.unprocessableEntity({ errors: validation.messages() });
       }
 
-      const parkingSpace = await ParkingSpaceRepository.all(
+      const clientInfo = await ClientInfoRepository.all(
         request.input("page"),
         request.input("per_page"),
         request.input("order_by"),
@@ -39,13 +39,13 @@ class ParkingSpaceController {
       );
 
       const transformed = await transform.collection(
-        parkingSpace,
-        "ParkingSpaceTransformer"
+        clientInfo,
+        "ClientInfoTransformer"
       );
 
-      const serialize = await ParkingSpaceRepository.serialize(
-        ParkingSpace.resourceKey,
-        parkingSpace,
+      const serialize = await ClientInfoRepository.serialize(
+        ClientInfo.resourceKey,
+        clientInfo,
         transformed
       );
 
@@ -56,8 +56,8 @@ class ParkingSpaceController {
   }
 
   /**
-   * Create/save a new parkingspace.
-   * POST parkingspaces
+   * Create/save a new clientinfo.
+   * POST clientinfos
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -67,30 +67,26 @@ class ParkingSpaceController {
   async store({ request, response, transform }) {
     try {
       const validation = await validate(
-        request.only(ParkingSpace.fillables),
-        ParkingSpace.createOrUpdateRules,
-        ParkingSpace.messages
+        request.only(ClientInfo.fillables),
+        ClientInfo.createOrUpdateRules,
+        ClientInfo.messages
       );
 
       if (validation.fails()) {
         return response.unprocessableEntity({ errors: validation.messages() });
       }
 
-      await ParkingSpaceRepository.findParkingLotId(
-        request.input("parking_lot_id")
-      );
-
-      const parkingSpace = await ParkingSpaceRepository.create(
-        request.only(ParkingSpace.fillables)
+      const clientInfo = await ClientInfoRepository.create(
+        request.only(ClientInfo.fillables)
       );
 
       const transformed = await transform.item(
-        parkingSpace,
-        "ParkingSpaceTransformer"
+        clientInfo,
+        "ClientInfoTransformer"
       );
 
-      const serialize = await ParkingSpaceRepository.serialize(
-        ParkingSpace.resourceKey,
+      const serialize = await ClientInfoRepository.serialize(
+        ClientInfo.resourceKey,
         null,
         transformed
       );
@@ -102,8 +98,8 @@ class ParkingSpaceController {
   }
 
   /**
-   * Display a single parkingspace.
-   * GET parkingspaces/:id
+   * Display a single clientinfo.
+   * GET clientinfos/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -116,25 +112,23 @@ class ParkingSpaceController {
 
       const validation = await validate(
         fields,
-        ParkingSpace.findRule(),
-        ParkingSpace.messages
+        ClientInfo.findRule(),
+        ClientInfo.messages
       );
 
       if (validation.fails()) {
         return response.unprocessableEntity({ errors: validation.messages() });
       }
 
-      const parkingSpace = await ParkingSpaceRepository.findParkingSpaceId(
-        params.id
-      );
+      const clientInfo = await ClientInfoRepository.findClientInfoId(params.id);
 
       const transformed = await transform.item(
-        parkingSpace,
-        "ParkingSpaceTransformer"
+        clientInfo,
+        "ClientInfoTransformer"
       );
 
-      const serialize = await ParkingSpaceRepository.serialize(
-        ParkingSpace.resourceKey,
+      const serialize = await ClientInfoRepository.serialize(
+        ClientInfo.resourceKey,
         null,
         transformed
       );
@@ -146,8 +140,8 @@ class ParkingSpaceController {
   }
 
   /**
-   * Update parkingspace details.
-   * PUT or PATCH parkingspaces/:id
+   * Update clientinfo details.
+   * PUT or PATCH clientinfos/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -156,31 +150,27 @@ class ParkingSpaceController {
    */
   async update({ params, request, response, transform }) {
     try {
-      const dataToUpdate = request.only(ParkingSpace.fillables);
+      const dataToUpdate = request.only(ClientInfo.fillables);
       const validation = await validate(
         dataToUpdate,
-        ParkingSpace.createOrUpdateRules,
-        ParkingSpace.messages
+        ClientInfo.createOrUpdateRules,
+        ClientInfo.messages
       );
 
       if (validation.fails()) {
         return response.unprocessableEntity({ errors: validation.messages() });
       }
 
-      const model = await ParkingSpaceRepository.findParkingSpaceId(params.id);
-      await ParkingSpaceRepository.update(model, dataToUpdate);
+      const model = await ClientInfoRepository.findClientInfoId(params.id);
+      await ClientInfoRepository.update(model, dataToUpdate);
 
-      const transformed = await transform.item(
-        model,
-        "ParkingSpaceTransformer"
-      );
+      const transformed = await transform.item(model, "ClientInfoTransformer");
 
-      const serialize = await ParkingSpaceRepository.serialize(
-        ParkingSpace.resourceKey,
+      const serialize = await ClientInfoRepository.serialize(
+        ClientInfo.resourceKey,
         null,
         transformed
       );
-
       return response.ok(serialize);
     } catch (error) {
       return response.preconditionFailed(error.message);
@@ -188,8 +178,8 @@ class ParkingSpaceController {
   }
 
   /**
-   * Delete a parkingspace with id.
-   * DELETE parkingspaces/:id
+   * Delete a clientinfo with id.
+   * DELETE clientinfos/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -201,19 +191,17 @@ class ParkingSpaceController {
 
       const validation = await validate(
         fields,
-        ParkingSpace.findRule(),
-        ParkingSpace.messages
+        ClientInfo.findRule(),
+        ClientInfo.messages
       );
 
       if (validation.fails()) {
         return response.unprocessableEntity({ errors: validation.messages() });
       }
 
-      const parkingSpace = await ParkingSpaceRepository.findParkingSpaceId(
-        params.id
-      );
+      const clientInfo = await ClientInfoRepository.findClientInfoId(params.id);
 
-      await parkingSpace.delete();
+      await clientInfo.delete();
 
       return response.accepted();
     } catch (error) {
@@ -222,4 +210,4 @@ class ParkingSpaceController {
   }
 }
 
-module.exports = ParkingSpaceController;
+module.exports = ClientInfoController;

@@ -69,12 +69,13 @@ class TestHelper {
     const x = 1,
       y = 6;
     let entryPointItems = ["A", "B", "C"];
-    let sizeItems = [0, 1, 2];
+    let sizeX = 0,
+      sizeY = 2;
     const data = {
       description: faker.lorem.word(),
       entry_point:
         entryPointItems[Math.floor(Math.random() * entryPointItems.length)],
-      size: sizeItems[Math.floor(Math.random() * sizeItems.length)],
+      size: ~~(Math.random() * sizeY) + sizeX,
       max_occupants: ~~(Math.random() * y) + x,
     };
 
@@ -110,6 +111,16 @@ class TestHelper {
           precision: 0.01,
         })
       ),
+    };
+  }
+
+  static clientInfoPayloadProvider() {
+    const x = 0,
+      y = 2;
+    return {
+      car_size: ~~(Math.random() * y) + x,
+      car_color: faker.lorem.word(),
+      plate_number: faker.lorem.word(),
     };
   }
 }
