@@ -2,7 +2,6 @@
 
 const { test, trait } = use("Test/Suite")("Pricing Rule Http");
 const PricingRule = use("App/Models/PricingRule");
-const User = use("App/Models/User");
 const Factory = use("Factory");
 const TestHelper = use("/TestHelper");
 

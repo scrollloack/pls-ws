@@ -2,7 +2,6 @@
 
 const { test, trait } = use("Test/Suite")("Parking Space Http");
 const ParkingSpace = use("App/Models/ParkingSpace");
-const User = use("App/Models/User");
 const Factory = use("Factory");
 const TestHelper = use("/TestHelper");
 
