@@ -25,6 +25,24 @@ class PricingRuleSeeder {
     priciingRule.created_at = moment().format();
     priciingRule.updated_at = moment().format();
     await priciingRule.save();
+
+    priciingRule = new PricingRule();
+    priciingRule.parking_lot_id = 2;
+    priciingRule.base_rate = parseFloat(40.0);
+    priciingRule.hourly_base_rate = parseFloat(60.0);
+    priciingRule.one_day_rate = parseFloat(5000.0);
+    priciingRule.created_at = moment().format();
+    priciingRule.updated_at = moment().format();
+    await priciingRule.save();
+
+    priciingRule = new PricingRule();
+    priciingRule.parking_lot_id = 3;
+    priciingRule.base_rate = parseFloat(40.0);
+    priciingRule.hourly_base_rate = parseFloat(100.0);
+    priciingRule.one_day_rate = parseFloat(5000.0);
+    priciingRule.created_at = moment().format();
+    priciingRule.updated_at = moment().format();
+    await priciingRule.save();
   }
 }
 

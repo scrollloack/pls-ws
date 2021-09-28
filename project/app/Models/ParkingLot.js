@@ -71,6 +71,10 @@ class ParkingLot extends Model {
   pricingRules() {
     return this.hasOne("App/Models/PricingRule");
   }
+
+  parkingRecord() {
+    return this.hasMany("App/Models/ParkingRecord");
+  }
 }
 
 module.exports = ParkingLot;

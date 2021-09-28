@@ -24,6 +24,22 @@ class ClientInfoSeeder {
     clientInfo.created_at = moment().format();
     clientInfo.updated_at = moment().format();
     await clientInfo.save();
+
+    clientInfo = new ClientInfo();
+    clientInfo.car_size = 0;
+    clientInfo.car_color = "green";
+    clientInfo.plate_number = "AAA-222";
+    clientInfo.created_at = moment().format();
+    clientInfo.updated_at = moment().format();
+    await clientInfo.save();
+
+    clientInfo = new ClientInfo();
+    clientInfo.car_size = 1;
+    clientInfo.car_color = "white";
+    clientInfo.plate_number = "AAA-333";
+    clientInfo.created_at = moment().format();
+    clientInfo.updated_at = moment().format();
+    await clientInfo.save();
   }
 }
 

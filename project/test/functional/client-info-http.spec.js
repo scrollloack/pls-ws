@@ -6,7 +6,6 @@ const Factory = use("Factory");
 const TestHelper = use("/TestHelper");
 
 trait("Test/ApiClient");
-trait("Session/Client");
 
 const URL_PATH = "/client-info";
 
