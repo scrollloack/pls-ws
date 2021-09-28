@@ -51,6 +51,10 @@ class ParkingSpace extends Model {
   parkingLot() {
     return this.belongsTo("App/Models/ParkingLot");
   }
+
+  parkingRecord() {
+    return this.hasMany("App/Models/ParkingRecord");
+  }
 }
 
 module.exports = ParkingSpace;

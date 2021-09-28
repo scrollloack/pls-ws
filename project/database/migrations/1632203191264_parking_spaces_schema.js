@@ -12,7 +12,8 @@ class ParkingSpacesSchema extends Schema {
         .unsigned()
         .references("parking_lots.id")
         .onDelete("CASCADE");
-      table.integer("space_number").notNullable().unique();
+      table.integer("space_number").notNullable();
+      table.string("status").defaultTo("unoccupied");
       table.timestamps();
     });
   }

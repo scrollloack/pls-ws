@@ -123,6 +123,30 @@ class TestHelper {
       plate_number: faker.lorem.word(),
     };
   }
+
+  static parkingRecordPayloadProvider() {
+    const x = 0,
+      y = 2;
+
+    let entryPointItems = ["A", "B", "C"];
+
+    return {
+      entry_point:
+        entryPointItems[Math.floor(Math.random() * entryPointItems.length)],
+      car_size: ~~(Math.random() * y) + x,
+      car_color: faker.lorem.word(),
+      plate_number: faker.lorem.word(),
+    };
+  }
+
+  static parkPayloadProvider() {
+    return {
+      parking_lot_id: 1,
+      parking_space_id: 1,
+      client_info_id: 1,
+      payment_id: 1,
+    };
+  }
 }
 
 module.exports = TestHelper;

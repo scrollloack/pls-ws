@@ -5,6 +5,7 @@ const ParkingSpaceRepository = make(
   "App/Models/Repositories/ParkingSpaceRepository"
 );
 const { validate } = use("Validator");
+const _ = use("lodash");
 
 /**
  * Resourceful controller for interacting with parkingspaces
@@ -74,6 +75,17 @@ class ParkingSpaceController {
 
       if (validation.fails()) {
         return response.unprocessableEntity({ errors: validation.messages() });
+      }
+
+      const checkSpaceNumber = await ParkingSpace.query()
+        .where("parking_lot_id", request.input("parking_lot_id"))
+        .andWhere("space_number", request.input("space_number"))
+        .fetch();
+
+      if (!_.isEmpty(checkSpaceNumber.toJSON())) {
+        return response
+          .status(400)
+          .json({ error: "Space Number already exists for the Parking Lot" });
       }
 
       await ParkingSpaceRepository.findParkingLotId(
@@ -165,6 +177,17 @@ class ParkingSpaceController {
 
       if (validation.fails()) {
         return response.unprocessableEntity({ errors: validation.messages() });
+      }
+
+      const checkSpaceNumber = await ParkingSpace.query()
+        .where("parking_lot_id", request.input("parking_lot_id"))
+        .andWhere("space_number", request.input("space_number"))
+        .fetch();
+
+      if (!_.isEmpty(checkSpaceNumber.toJSON())) {
+        return response
+          .status(400)
+          .json({ error: "Space Number already exists for the Parking Lot" });
       }
 
       const model = await ParkingSpaceRepository.findParkingSpaceId(params.id);

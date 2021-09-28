@@ -155,6 +155,46 @@ test("it should validate create ParkingSpace rules", async ({ client }) => {
   numberResponse.assertStatus(422);
 });
 
+test("it should validate create ParkingSpace space_number", async ({
+  client,
+}) => {
+  const token = await TestHelper.getToken();
+
+  const parkingLotData = await TestHelper.parkingLotPayloadProvider();
+
+  const parkingLot = await Factory.model("App/Models/ParkingLot").create(
+    parkingLotData
+  );
+
+  const data = TestHelper.parkingSpacePayloadProvider();
+
+  data.parking_lot_id = parkingLot.id;
+
+  const response = await client
+    .post(URL_PATH)
+    .header("Authorization", "Bearer " + token)
+    .send(data)
+    .end();
+
+  response.assertStatus(201);
+
+  const errorData = TestHelper.parkingSpacePayloadProvider();
+
+  errorData.parking_lot_id = parkingLot.id;
+  errorData.space_number = data.space_number;
+
+  const errorResponse = await client
+    .post(URL_PATH)
+    .header("Authorization", "Bearer " + token)
+    .send(errorData)
+    .end();
+
+  errorResponse.assertStatus(400);
+  errorResponse.assertJSONSubset({
+    error: "Space Number already exists for the Parking Lot",
+  });
+});
+
 test("it should create ParkingSpace", async ({ client }) => {
   const token = await TestHelper.getToken();
 
@@ -216,6 +256,42 @@ test("it should validate update ParkingSpace by id", async ({ client }) => {
     .end();
 
   numberResponse.assertStatus(422);
+});
+
+test("it should validate update ParkingSpace space number", async ({
+  client,
+}) => {
+  const token = await TestHelper.getToken();
+
+  const parkingLotData = await TestHelper.parkingLotPayloadProvider();
+
+  const parkingLot = await Factory.model("App/Models/ParkingLot").create(
+    parkingLotData
+  );
+
+  const data = await TestHelper.parkingSpacePayloadProvider();
+
+  data.parking_lot_id = parkingLot.id;
+
+  const parkingSpace = await Factory.model("App/Models/ParkingSpace").create(
+    data
+  );
+
+  const errorData = TestHelper.parkingSpacePayloadProvider();
+
+  errorData.parking_lot_id = parkingLot.id;
+  errorData.space_number = data.space_number;
+
+  const errorResponse = await client
+    .put(`${URL_PATH}/${parkingSpace.id}`)
+    .header("Authorization", "Bearer " + token)
+    .send(errorData)
+    .end();
+
+  errorResponse.assertStatus(400);
+  errorResponse.assertJSONSubset({
+    error: "Space Number already exists for the Parking Lot",
+  });
 });
 
 test("it should update ParkingSpace", async ({ client }) => {

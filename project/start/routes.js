@@ -40,3 +40,12 @@ Route.resource("client-info", "ClientInfoController").except([
   "edit",
   "create",
 ]);
+
+Route.group(() => {
+  Route.get(
+    "parking-record/:id",
+    "ParkingRecordController.findParkingRecordById"
+  );
+  Route.post("parking-record", "ParkingRecordController.park");
+  Route.put("parking-record/:id", "ParkingRecordController.unpark");
+});

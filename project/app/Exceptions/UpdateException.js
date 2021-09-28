@@ -1,6 +1,7 @@
 "use strict";
 
 const { LogicalException } = require("@adonisjs/generic-exceptions");
+const Config = use("Config");
 
 class UpdateException extends LogicalException {
   constructor(message) {

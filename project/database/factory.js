@@ -85,3 +85,19 @@ Factory.blueprint("App/Models/ClientInfo", async (faker, i, data) => {
     plate_number: data.plate_number ? data.plate_number : faker.lorem.word(),
   };
 });
+
+Factory.blueprint("App/Models/Payment", async (faker, i, data) => {
+  return {
+    payment_status: data.payment_status ? data.payment_status : "pending",
+    total_fee: data.total_fee ? data.total_fee : null,
+  };
+});
+
+Factory.blueprint("App/Models/ParkingRecord", async (faker, i, data) => {
+  return {
+    parking_lot_id: data.parking_lot_id ? data.parking_lot_id : 1,
+    parking_space_id: data.parking_space_id ? data.parking_space_id : 1,
+    client_info_id: data.client_info_id ? data.client_info_id : 1,
+    payment_id: data.payment_id ? data.payment_id : 1,
+  };
+});
