@@ -8,7 +8,7 @@ COPY ./project/package*.json ./
 
 RUN npm i -g @adonisjs/cli && \
   npm i -g pm2 && \
-  npm i --quiet --production
+  npm install
 
 COPY ./project .
 

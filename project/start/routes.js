@@ -20,6 +20,32 @@ Route.get("/", () => {
   return { greeting: "Hello world in JSON" };
 });
 
-Route.post("login", "UserController.login").middleware("guest");
+Route.post("login", "UserController.login");
 
-Route.get("users/:id", "UserController.show").middleware("auth");
+// Route.get("users/:id", "UserController.show").middleware("auth");
+
+Route.resource("parking-lots", "ParkingLotController")
+  .except(["edit", "create"])
+  .middleware("jwt");
+
+Route.resource("parking-space", "ParkingSpaceController")
+  .except(["edit", "create"])
+  .middleware("jwt");
+
+Route.resource("pricing-rule", "PricingRuleController")
+  .except(["edit", "create"])
+  .middleware("jwt");
+
+Route.resource("client-info", "ClientInfoController").except([
+  "edit",
+  "create",
+]);
+
+Route.group(() => {
+  Route.get(
+    "parking-record/:id",
+    "ParkingRecordController.findParkingRecordById"
+  );
+  Route.post("parking-record", "ParkingRecordController.park");
+  Route.put("parking-record/:id", "ParkingRecordController.unpark");
+});
