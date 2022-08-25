@@ -5,7 +5,7 @@ Parking Lot System
 # Docker locally
 
 ```
-docker-compose up -d --build
+docker-compose up -d
 ```
 
 # Run tests
